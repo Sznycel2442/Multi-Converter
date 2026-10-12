@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MULTI//CONVERTER</title>
+  <meta name="description" content="Bezpieczny, bezstratny konwerter plików działający w przeglądarce. Bez limitu rozmiaru." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="./css/theme.css" />
+  <link rel="stylesheet" href="./css/app.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='4' fill='%236366f1'/><path d='M3.5 8h9M8.5 4.5L12 8l-3.5 3.5' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand__mark">▚</span>
+      <h1 class="brand__title">MULTI<span class="brand__slash">//</span>CONVERTER</h1>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar" id="section-nav" aria-label="Sekcje konwertera">
+      <!-- wypełniane przez js/app.js -->
+    </nav>
+
+    <main class="workspace">
+
+      <!-- ================= WIDOK KONWERTERA ================= -->
+      <div id="converter-view">
+
+        <!-- Hero (inspiracja: convertio.co) -->
+        <section class="hero">
+          <h2 class="hero__title">Konwerter <span class="hero__accent">plików</span></h2>
+          <p class="hero__sub">Konwertuj obrazy, audio, wideo, modele 3D, dokumenty i dane — wszystko lokalnie, w Twojej przeglądarce.</p>
+          <div class="hero__features">
+            <span class="feature-chip"><span class="feature-chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a3 3 0 100 6 3 3 0 002.24-1.01L12 10l3.76 4A3 3 0 1018 9c-.86 0-1.65.37-2.24 1.01L12 14l-3.76-4A3 3 0 006 9z"/></svg></span> Bez limitu rozmiaru pliku</span>
+            <span class="feature-chip"><span class="feature-chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span> Pliki nie opuszczają urządzenia</span>
+            <span class="feature-chip"><span class="feature-chip__icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></span> 40+ formatów</span>
+          </div>
+        </section>
+
+        <section class="section-head">
+          <h2 class="section-head__title" id="section-title">—</h2>
+          <p class="section-head__desc" id="section-desc"></p>
+        </section>
+
+        <!-- Strefa uploadu -->
+        <div class="dropzone" id="dropzone" tabindex="0" role="button"
+             aria-label="Kliknij lub upuść pliki, aby dodać">
+          <input type="file" id="file-input" multiple hidden />
+          <div class="dropzone__inner">
+            <div class="dropzone__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg></div>
+            <div class="dropzone__text">
+              <strong>Upuść pliki</strong> albo kliknij, aby wybrać
+            </div>
+            <div class="dropzone__hint" id="dropzone-hint">Obsługiwane formaty pojawią się tutaj</div>
+            <div class="dropzone__nolimit">Bez limitu rozmiaru</div>
+          </div>
+        </div>
+
+        <!-- Lista plików wejściowych -->
+        <div class="panel" id="files-panel" hidden>
+          <div class="panel__head">
+            <span class="panel__title">Pliki wejściowe <span class="counter" id="files-count">0</span></span>
+            <button class="btn btn--ghost btn--sm" id="clear-files">Wyczyść</button>
+          </div>
+          <ul class="file-list" id="file-list"></ul>
+        </div>
+
+        <!-- Panel konwersji -->
+        <div class="panel panel--controls" id="controls-panel" hidden>
+          <div class="control-row">
+            <label class="field">
+              <span class="field__label">Format wyjściowy</span>
+              <select id="target-format" class="select"></select>
+            </label>
+            <div class="field field--options" id="options-slot"></div>
+          </div>
+          <div class="control-row control-row--actions">
+            <div class="quality-note" id="quality-note"></div>
+            <button class="btn btn--primary btn--big" id="convert-btn" disabled>
+              <span class="btn__label">Konwertuj</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Wyniki -->
+        <div class="panel" id="results-panel" hidden>
+          <div class="panel__head">
+            <span class="panel__title">Wyniki <span class="counter" id="results-count">0</span></span>
+            <button class="btn btn--primary btn--sm" id="download-zip">Pobierz ZIP</button>
+          </div>
+          <ul class="file-list" id="results-list"></ul>
+        </div>
+
+        <!-- Popularne konwersje -->
+        <section class="popular" id="popular">
+          <div class="popular__title">Popularne konwersje</div>
+          <div class="popular__grid" id="popular-grid"></div>
+        </section>
+      </div>
+
+      <!-- ================= WIDOK HISTORII ================= -->
+      <div id="history-view" hidden>
+        <section class="section-head">
+          <h2 class="section-head__title">Historia</h2>
+          <p class="section-head__desc">Wszystkie przekonwertowane pliki — zapisane lokalnie w przeglądarce. Możesz do nich wrócić nawet po odświeżeniu strony.</p>
+        </section>
+
+        <div class="panel">
+          <div class="panel__head">
+            <span class="panel__title">Przekonwertowane pliki <span class="counter" id="history-count">0</span></span>
+            <div class="panel__actions">
+              <button class="btn btn--primary btn--sm" id="history-zip">Pobierz ZIP</button>
+              <button class="btn btn--ghost btn--sm" id="history-clear">Wyczyść historię</button>
+            </div>
+          </div>
+          <ul class="file-list" id="history-list"></ul>
+          <div class="empty-state" id="history-empty">
+            <div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg></div>
+            Jeszcze nic tu nie ma.<br />Przekonwertuj pierwszy plik, a pojawi się na tej liście.
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+  <!-- Mapa importów dla three.js (sekcja 3D). Musi być przed modułami. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+      "fflate": "https://unpkg.com/fflate@0.8.2/esm/browser.js"
+    }
+  }
+  </script>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

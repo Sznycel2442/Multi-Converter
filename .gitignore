@@ -1,0 +1,40 @@
+# --- Sekrety / konfiguracja lokalna ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*secret*
+*credentials*
+
+# --- Python (serve.py) ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# --- Node (gdyby doszedł wariant z Vite) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+.vite/
+
+# --- Edytory / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- System operacyjny ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Pliki tymczasowe / robocze ---
+*.tmp
+*.log
+*.bak
